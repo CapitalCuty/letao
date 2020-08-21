@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>收货地址管理</title>
+    <link rel="stylesheet" href="./assets/mui/css/mui.min.css">
+    <link rel="stylesheet" href="assets/mui/css/iconfont.css">
+    <link rel="stylesheet" href="./css/base.css">
+    <script src="./assets/mui/js/mui.min.js"></script>
+    <script src="./assets/zepto/zepto.min.js"></script>
+    <script src="./assets/artTemplate/template-web.js"></script>
+</head>
+
+<body>
+    <header class="mui-bar mui-bar-nav header">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+        <a class="mui-icon mui-icon-search mui-pull-right"></a>
+        <h1 class="mui-title">乐淘云购</h1>
+    </header>
+    <nav class="mui-bar mui-bar-tab footer">
+        <a class="mui-tab-item" href="index.html">
+            <span class="mui-icon mui-icon-home"></span>
+            <span class="mui-tab-label">首页</span>
+        </a>
+        <a class="mui-tab-item" href="category.html">
+            <span class="mui-icon mui-icon-bars"></span>
+            <span class="mui-tab-label">分类</span>
+        </a>
+        <a class="mui-tab-item" href="cart.html">
+            <span class="mui-icon iconfont icon-gouwuche"></span>
+            <span class="mui-tab-label">购物车</span>
+        </a>
+        <a class="mui-tab-item mui-active" href="user.html">
+            <span class="mui-icon mui-icon-person"></span>
+            <span class="mui-tab-label">会员中心</span>
+        </a>
+    </nav>
+
+    <div class="mui-content">
+        <div class="mui-scroll-wrapper">
+            <div class="mui-scroll">
+                <!--这里放置真实显示的DOM内容-->
+                <div class="my-container">
+                    <ul class="mui-table-view addressUlBox">
+                        <!-- 模板引擎添加数据 -->
+                    </ul>
+                    <ul class="mui-table-view">
+                        <!-- 模板引擎添加数据 -->
+                        <li class="mui-table-view-cell mui-text-center"><a href="./address.html">添加收货地址</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+    <script type="text/html" id="address-tmp">
+        {{each data}}
+        <li class="mui-table-view-cell mui-transitioning">
+            <div class="mui-slider-right mui-disabled">
+                <a class="mui-btn mui-btn-primary" style="transform: translate(0px, 0px);">编辑</a>
+                <a class="mui-btn mui-btn-red" style="transform: translate(0px, 0px);">删除</a>
+            </div>
+            <div class="mui-slider-handle" style="transform: translate(0px, 0px);">
+                <p>
+                    <div>收货人：<span>{{$value.recipients}}</span></div>
+                    <div>邮编：<span>{{$value.postCode}}</span></div>
+                    <p>{{$value.addressDetail}}</p>
+                </p>
+            </div>
+        </li>
+        {{/each}}
+    </script>
+
+    <script>
+        $.ajax({
+            url: "/address/queryAddress",
+            type: "get",
+            success: function (res) {
+                if (res.code === 200) {
+                    mui.alert(res.message)
+                } else {
+                    var obj = {
+                        data: res
+                    }
+                    // console.log(obj)
+                    var data_html = template("address-tmp", obj)
+                    $(".addressUlBox").prepend(data_html)
+                    // console.log(data_html)
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>

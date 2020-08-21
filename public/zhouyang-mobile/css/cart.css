@@ -1,0 +1,12 @@
+#mycontent .products {
+  color: #8f8f94;
+}
+#mycontent .products .price {
+  color: #ff3300;
+}
+#mycontent .products .price i {
+  font-style: normal;
+}
+#mycontent .products .oldPrice i {
+  font-style: normal;
+}

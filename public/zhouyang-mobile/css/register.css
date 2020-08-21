@@ -1,0 +1,57 @@
+.my-container div {
+  overflow: hidden;
+  margin-left: 15px;
+  height: 40px;
+  line-height: 40px;
+  border-bottom: 1px solid #eeeeee;
+  position: relative;
+}
+.my-container div label {
+  float: left;
+  width: 25%;
+  text-align: left;
+}
+.my-container div input {
+  float: right;
+  border: none;
+  width: 75% !important;
+}
+.my-container div span {
+  position: absolute;
+  display: inline-block;
+  line-height: 40px;
+  right: 10px;
+  color: #999999;
+  font-size: 20px;
+}
+.my-container div .get-code {
+  margin: 0;
+  width: 90px;
+  position: absolute;
+  height: 40px;
+  line-height: 40px;
+  vertical-align: middle;
+  color: #006699;
+  right: 0;
+}
+.my-container p {
+  padding: 20px 10px 0;
+}
+.my-container p button {
+  width: 100%;
+  box-sizing: border-box;
+  color: #ffffff;
+  background-color: #006699;
+  height: 38px;
+  vertical-align: middle;
+  border-radius: 5px;
+  border: none;
+}
+.my-container a {
+  color: #006699;
+  display: inline-block;
+  width: 100%;
+  padding-right: 10px;
+  text-align: right;
+  margin-top: 10px;
+}

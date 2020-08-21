@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>注册页面</title>
+    <link rel="stylesheet" href="./assets/mui/css/mui.min.css">
+    <link rel="stylesheet" href="assets/mui/css/iconfont.css">
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/register.css">
+    <script src="./assets/mui/js/mui.min.js"></script>
+    <script src="./assets/zepto/zepto.min.js"></script>
+</head>
+
+<body>
+    <header class="mui-bar mui-bar-nav header">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+        <a class="mui-icon mui-icon-search mui-pull-right"></a>
+        <h1 class="mui-title">注册</h1>
+    </header>
+    <nav class="mui-bar mui-bar-tab footer">
+        <a class="mui-tab-item" href="index.html">
+            <span class="mui-icon mui-icon-home"></span>
+            <span class="mui-tab-label">首页</span>
+        </a>
+        <a class="mui-tab-item" href="category.html">
+            <span class="mui-icon mui-icon-bars"></span>
+            <span class="mui-tab-label">分类</span>
+        </a>
+        <a class="mui-tab-item" href="cart.html">
+            <span class="mui-icon iconfont icon-gouwuche"></span>
+            <span class="mui-tab-label">购物车</span>
+        </a>
+        <a class="mui-tab-item" href="./user.html">
+            <span class="mui-icon mui-icon-person"></span>
+            <span class="mui-tab-label">会员中心</span>
+        </a>
+    </nav>
+
+    <div class="mui-content">
+        <div class="mui-scroll-wrapper">
+            <div class="mui-scroll">
+                <!--这里放置真实显示的DOM内容-->
+                <div class="my-container"> 
+                    <div>
+                        <label for="old-pwd">原密码</label>
+                        <input type="password" placeholder="请输入原密码" id="old-pwd">
+                        <span class="mui-icon mui-icon-eye"></span>
+                    </div>
+                    <div>
+                        <label for="new-pwd">新密码</label>
+                        <input type="password" placeholder="请输入新密码" id="new-pwd" >
+                        <span class="mui-icon mui-icon-eye"></span>
+                    </div>
+                    <div>
+                        <label for="assure-new-pwd">新密码</label>
+                        <input type="password" placeholder="请确认新密码" id="assure-new-pwd" >
+                        <span class="mui-icon mui-icon-eye"></span>
+                    </div>
+                    <div>
+                        <label for="user-assure-code">认证码</label>
+                        <input type="text" placeholder="认证码" id="user-assure-code">
+                        <a class="get-code" href="#">获取验证码</a>
+                    </div>
+                    <p>
+                        <button class="assure-btn">确认修改密码</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script>
+        var vCode;
+        $(".mui-icon-eye").on("tap",function(){
+            $(this).prev().prop("type")=="password"?$(this).prev().prop("type","text"):$(this).prev().prop("type","password");
+        })
+        $(".assure-btn").on("tap",function(){
+            var old_pwd= $("#old-pwd").val().trim();
+            var new_pwd= $("#new-pwd").val().trim();
+            var assure_new_pwd= $("#assure-new-pwd").val().trim();
+            var user_assure_code = $("#user-assure-code").val().trim();
+
+            if(!old_pwd) {
+                mui.alert("请输入原密码");
+                return
+            }
+            if(!new_pwd) {
+                mui.alert("请输入新密码");
+                return
+            }
+            if(!assure_new_pwd) {
+                mui.alert("请输入确认新密码");
+                return
+            }
+            
+            if(assure_new_pwd !== new_pwd) {
+                mui.alert("两次密码输入不一致");
+                return
+            }
+            if(!user_assure_code) {
+                mui.alert("请输入认证码");
+                return
+            }
+            if(user_assure_code !== vCode ) {
+                mui.alert("认证码输入错误");
+                return
+            }
+
+
+            // 注册
+            $.ajax({
+                url:"/user/updatePassword",
+                type:"post",
+                data:{
+                    oldPassword:old_pwd,
+                    newPassword:new_pwd,
+                    vCode:user_assure_code
+                },
+                success:function(res){
+                    console.log(res)
+                    mui.alert(res.message)
+                    location.href="./login.html"
+                },
+                error:function(err){
+                    mui.alert(err)
+                }
+            })
+
+        })
+
+        // 获取验证码
+        $(".get-code").on("click",function(){
+            $.ajax({
+                url:"/user/vCodeForUpdatePassword",
+                type:"get",
+                success:function(res){
+                    vCode = res.vCode
+                    mui.alert(res.vCode)
+                },
+                error:function(err){
+                    mui.alert(err)
+                }
+            })
+        })
+    </script>
+</body>
+
+</html>

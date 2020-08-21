@@ -1,0 +1,57 @@
+body{
+	background:#FFF;
+	font-size:14px;
+}
+
+a{
+	color:#000;
+	text-decoration:none;
+}
+
+*{
+	margin:0;
+	padding:0;
+}
+
+ul,li{
+	list-style:none;
+}
+
+img{
+	vertical-align:top;
+}
+
+.mui-content{
+	background:#FFF;
+}
+
+.footer,.header{
+	background:#006699;
+	
+}
+
+.header .mui-title{
+	color:#FFF;
+}
+
+.header .mui-icon{
+	color:#FFF;
+}
+
+.footer .mui-tab-item{
+	color:#FFF;
+}
+
+.footer .mui-tab-item.mui-active{
+	color:darkorange;
+}
+
+.mui-scroll-wrapper{
+	top:44px;
+	bottom:50px;
+}
+
+
+
+
+

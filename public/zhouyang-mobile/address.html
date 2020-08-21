@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>添加地址管理</title>
+    <link rel="stylesheet" href="./assets/mui/css/mui.min.css">
+    <link rel="stylesheet" href="assets/mui/css/iconfont.css">
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/address.css">
+    <link rel="stylesheet" href="./assets/mui/css/mui.picker.css">
+    <link rel="stylesheet" href="./assets/mui/css/mui.poppicker.css">
+    <script src="./assets/mui/js/mui.min.js"></script>
+    <script src="./assets/mui/js/mui.picker.js"></script>
+    <script src="./assets/mui/js/mui.poppicker.js"></script>
+    <script src="./assets/mui/js/city.js"></script>
+    <script src="./assets/zepto/zepto.min.js"></script>
+</head>
+
+<body>
+    <header class="mui-bar mui-bar-nav header">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+        <a class="mui-icon mui-icon-search mui-pull-right"></a>
+        <h1 class="mui-title">乐淘云购</h1>
+    </header>
+    <nav class="mui-bar mui-bar-tab footer">
+        <a class="mui-tab-item" href="index.html">
+            <span class="mui-icon mui-icon-home"></span>
+            <span class="mui-tab-label">首页</span>
+        </a>
+        <a class="mui-tab-item" href="category.html">
+            <span class="mui-icon mui-icon-bars"></span>
+            <span class="mui-tab-label">分类</span>
+        </a>
+        <a class="mui-tab-item" href="cart.html">
+            <span class="mui-icon iconfont icon-gouwuche"></span>
+            <span class="mui-tab-label">购物车</span>
+        </a>
+        <a class="mui-tab-item mui-active" href="user.html">
+            <span class="mui-icon mui-icon-person"></span>
+            <span class="mui-tab-label">会员中心</span>
+        </a>
+    </nav>
+
+    <div class="mui-content">
+        <div class="mui-scroll-wrapper">
+            <div class="mui-scroll">
+                <!--这里放置真实显示的DOM内容-->
+                <div class="my-container">
+                    <ul class="mui-table-view">
+                        <li class="mui-table-view-cell">
+                            <input type="text" name="" id="recipients" placeholder="收货人姓名">
+                        </li>
+                        <li class="mui-table-view-cell">
+                            <input type="text" name="" id="postcode" placeholder="邮编">
+                        </li>
+                        <li class="mui-table-view-cell">
+                            <input type="text" name="" id="address" placeholder="省市区">
+                        </li>
+                        <li class="mui-table-view-cell">
+                            <input type="text" name="" id="addressDetail" placeholder="详细地址">
+                        </li>
+                        <div class="mui-table-view-cell mui-text-center address-assure">
+                            <a href="#" class="">确认</a>
+                        </div>
+                    </ul>
+
+
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script>
+        // 通过new mui.PopPicker()初始化popPicker组件
+        var picker = new mui.PopPicker({
+            layer: 3
+        });
+        // 给picker对象添加数据
+        picker.setData(cityData);
+        // 显示picker
+        $("#address").on("tap", function () {
+            picker.show(function (SelectedItem) {
+                $("#address").val(SelectedItem[0].text + "-" + SelectedItem[1].text + "-" + SelectedItem[2].text)
+            })
+        })
+
+
+    </script>
+
+    <script>
+        $(".address-assure").on("tap", function () {
+
+            if (!$("#recipients").val().trim()) {
+                mui.alert("请输入收货人姓名")
+                return
+            }
+            if (!$("#postcode").val().trim()) {
+                mui.alert("请输入邮编")
+                return
+            }
+
+            if (!/^[a-zA-Z0-9 ]{3,12}$/.test($("#postcode").val().trim())) {
+                mui.alert("请输入正确的邮编格式")
+                return
+            }
+            if (!$("#address").val().trim()) {
+                mui.alert("请输入省市区地址")
+                return
+            }
+            if (!$("#addressDetail").val().trim()) {
+                mui.alert("请输入详细地址")
+                return
+            }
+
+            // address 三级联动地址 addressDetail 详细地址 recipients 收货人 postcode 邮编
+            $.ajax({
+                url: "/address/addAddress",
+                type: "post",
+                data:{
+                    recipients:$("#recipients").val().trim(),
+                    postcode:$("#postcode").val().trim(),
+                    address:$("#address").val().trim(),
+                    addressDetail:$("#addressDetail").val().trim()
+                },
+                success: function (res) {
+                    console.log(res)
+                    if (res.success) {
+                        location.href = "./addAddress.html"
+                    }
+                },
+                error: function (err) {
+                    mui.alert(err)
+                },
+                complete: function () {
+                    $("#recipients").val("")
+                    $("#postcode").val("")
+                    $("#address").val("")
+                    $("#addressDetail").val("")
+                }
+            })
+        })
+    </script>
+</body>
+
+</html>

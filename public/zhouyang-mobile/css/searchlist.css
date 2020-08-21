@@ -1,0 +1,50 @@
+.mui-content {
+  background-color: #fff;
+}
+.mui-content .container {
+  padding: 10px;
+}
+.mui-content .container .topBox {
+  background-color: #efeff4;
+  padding: 8px 0;
+  text-align: center;
+}
+.mui-content .container .middleBox ul {
+  margin-top: 10px;
+}
+.mui-content .container .middleBox ul li {
+  text-align: center;
+  width: 50%;
+  float: left;
+  padding: 5px;
+}
+.mui-content .container .middleBox ul li a {
+  display: block;
+  padding: 0 5px;
+  box-shadow: 0 0 5px #ccc;
+  overflow: hidden;
+}
+.mui-content .container .middleBox ul li a img {
+  width: 100%;
+}
+.mui-content .container .middleBox ul li a p {
+  font-size: 14px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.mui-content .container .middleBox ul li a div span {
+  color: red;
+  font-size: 14px;
+}
+.mui-content .container .middleBox ul li a div s {
+  color: #999999;
+}
+.mui-content .container .middleBox ul li a button {
+  background-color: #006699;
+  color: #ffffff;
+  padding: 6px 12px;
+  margin: 10px 0 20px 0;
+}

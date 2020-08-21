@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>购物车</title>
+    <link rel="stylesheet" href="./assets/mui/css/mui.min.css">
+    <link rel="stylesheet" href="assets/mui/css/iconfont.css">
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/cart.css">
+    <script src="./assets/mui/js/mui.min.js"></script>
+    <script src="./assets/zepto/zepto.min.js"></script>
+    <script src="./assets/artTemplate/template-web.js"></script>
+</head>
+
+<body>
+    <header class="mui-bar mui-bar-nav header">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+        <a class="mui-icon mui-icon-search mui-pull-right"></a>
+        <h1 class="mui-title">乐淘云购</h1>
+    </header>
+    <nav class="mui-bar mui-bar-tab footer">
+        <a class="mui-tab-item" href="index.html">
+            <span class="mui-icon mui-icon-home"></span>
+            <span class="mui-tab-label">首页</span>
+        </a>
+        <a class="mui-tab-item" href="category.html">
+            <span class="mui-icon mui-icon-bars"></span>
+            <span class="mui-tab-label">分类</span>
+        </a>
+        <a class="mui-tab-item mui-active" href="cart.html">
+            <span class="mui-icon iconfont icon-gouwuche"></span>
+            <span class="mui-tab-label">购物车</span>
+        </a>
+        <a class="mui-tab-item" href="user.html">
+            <span class="mui-icon mui-icon-person"></span>
+            <span class="mui-tab-label">会员中心</span>
+        </a>
+    </nav>
+
+    <div class="mui-content">
+        <div class="mui-scroll-wrapper">
+            <div class="mui-scroll">
+                <!--这里放置真实显示的DOM内容-->
+                <ul id="mycontent" class="mui-table-view">
+
+                    <!-- 将会通过模板引擎引入数据 -->
+                    <!-- <li class="mui-table-view-cell mui-transitioning">
+                        <div class="mui-slider-right mui-disabled">
+                            <a class="mui-btn mui-btn-primary" style="transform: translate(0px, 0px);">修改</a>
+                            <a class="mui-btn mui-btn-red" style="transform: translate(0px, 0px);">删除</a>
+                        </div>
+                        <div class="mui-slider-handle" style="transform: translate(0px, 0px);">
+                            <a href="javascript:;">
+                                <img class="mui-media-object mui-pull-left" src="./images/user.jpg">
+                                <div class="mui-media-body">
+                                    <div class="proName">迪奥999</div>
+                                    <p class='mui-ellipsis'>
+                                        <input type="checkbox" name="" class="checkbox">
+                                        <span class="price">￥<i>4969.1</i></span>
+                                        <s class="oldPrice">￥<i>8868.1</i></s>
+                                        <span>鞋码：</span>
+                                        <span class="size">41</span>
+                                        <span>x</span>
+                                        <span class="num">1</span>
+                                        <span>双</span>
+                                    </p>
+                                </div>
+                            </a>
+                        </div>
+                    </li> -->
+                </ul>
+                
+                <h4 class="total">订单总额：¥<span class="total-money">110</span></h4>
+                <div class="mui-popup mui-popup-in" style="display: block;">
+                    <div class="mui-popup-inner">
+                        <div class="mui-popup-title">编辑商品</div>
+                        <div class="mui-popup-text">		
+                            <div class="detail-size">			
+                                尺码：									
+                                <span class="">40</span>									
+                                <span class="">41</span>									
+                                <span class="">42</span>									
+                                <span class="">43</span>									
+                                <span class="">44</span>									
+                                <span class="">45</span>									
+                                <span class="">46</span>									
+                                <span class="">47</span>									
+                                、<span class="">48</span>									
+                                <span class="">49</span>									
+                                <span class="active">50</span>						
+                            </div>		
+                            <div class="detail-num">			
+                                数量：<span class="reduce">-</span>
+                                <input type="text" class="num" value="1">
+                                <span class="plus">+</span>		
+                            </div>	
+                        </div>
+                    </div>
+                    <div class="mui-popup-buttons">
+                        <span class="mui-popup-button" class="confirmBtn">确定</span>
+                        <span class="mui-popup-button mui-popup-button-bold">取消</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <!-- 定义购物车模板 -->
+    <script type="text/html" id="cart-temp">
+        {{each data as values}}
+        <li class="mui-table-view-cell mui-transitioning">
+            <div class="mui-slider-right mui-disabled">
+                <a class="mui-btn mui-btn-primary" style="transform: translate(0px, 0px);">修改</a>
+                <a class="mui-btn mui-btn-red" style="transform: translate(0px, 0px);">删除</a>
+            </div>
+            <div class="mui-slider-handle" style="transform: translate(0px, 0px);">
+                <a href="javascript:;">
+                    <img class="mui-media-object mui-pull-left" src="./images/{{values.pic[0].picName}}">
+                    <div class="mui-media-body products" >
+                        <div class="proName">{{values.proName}}</div>
+                        <p class='mui-ellipsis'>
+                            <input type="checkbox" name="" class="checkbox">
+                            <span class="price">￥<i>{{values.price}}</i></span>
+                            <s class="oldPrice">￥<i>{{values.oldPrice}}</i></s>
+                            <span>鞋码：</span>
+                            <span class="size">{{values.size}}</span>
+                            <span>x</span>
+                            <span class="num">{{values.num}}</span>
+                            <span>双</span>
+                        </p>
+                    </div>
+                </a>
+            </div>
+            
+        </li>
+        {{/each}}
+    </script>
+
+    <script>
+        $(function(){
+            // 查询购物车信息
+            $.ajax({
+                url:"/cart/queryCart",
+                type:"GET",
+                success:function(res){
+                    var obj = {
+                        data:res
+                    };
+                    console.log(obj);
+                    var dataHtml = template("cart-temp",obj);
+                    $("#mycontent").html(dataHtml);
+
+                }
+            })
+
+
+            // 页面可以滚动
+            mui('.mui-scroll-wrapper').scroll({
+                deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+            });
+
+
+            // 计算订单总额
+            var total_money = 0;
+            $(".total-money").text(total_money.toFixed(1));
+            
+            // 天啊，checkbox用click事件比较准，用tap会不准
+            $("#mycontent").on("click",".checkbox",function(){
+                $("#mycontent .checkbox").each(function(index,value){
+                    if($(this).get(0).checked){
+                        // console.log($(this))
+                        var price = $(this).next().find("i").text();
+                        var num = $(this).siblings(".num").text();
+                        // console.log(price+"------"+num);
+                        total_money+= price*num;
+                    }
+                
+                })
+                $(".total-money").text(total_money.toFixed(1));
+
+            })
+            
+
+            // 修改购物车
+            $("#mycontent").on("click",".mui-btn-primary",function(){
+                mui.prompt('text','deftext','编辑商品',['确定','取消'],null,'div') 
+                document.querySelector('.mui-popup-input input').type='password' 
+            })
+            console.log(document.querySelectorAll("#mycontent .confirmBtn"))
+            document.querySelector("#mycontent .confirmBtn").addEventListener('tap', function() {
+				var btnArray = ['否', '是'];
+				mui.confirm('MUI是个好框架，确认？', 'Hello MUI', btnArray, function(e) {
+					if (e.index == 1) {
+						info.innerText = '你刚确认MUI是个好框架';
+					} else {
+						info.innerText = 'MUI没有得到你的认可，继续加油'
+					}
+				})
+			});
+
+
+        })
+    </script>
+</body>
+
+</html>

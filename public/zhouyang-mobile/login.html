@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>登录</title>
+    <link rel="stylesheet" href="./assets/mui/css/mui.min.css">
+    <link rel="stylesheet" href="assets/mui/css/iconfont.css">
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/register.css">
+    <script src="./assets/mui/js/mui.min.js"></script>
+    <script src="./assets/zepto/zepto.min.js"></script>
+</head>
+
+<body>
+    <header class="mui-bar mui-bar-nav header">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+        <a class="mui-icon mui-icon-search mui-pull-right"></a>
+        <h1 class="mui-title">登录</h1>
+    </header>
+    <nav class="mui-bar mui-bar-tab footer">
+        <a class="mui-tab-item" href="index.html">
+            <span class="mui-icon mui-icon-home"></span>
+            <span class="mui-tab-label">首页</span>
+        </a>
+        <a class="mui-tab-item" href="category.html">
+            <span class="mui-icon mui-icon-bars"></span>
+            <span class="mui-tab-label">分类</span>
+        </a>
+        <a class="mui-tab-item" href="cart.html">
+            <span class="mui-icon iconfont icon-gouwuche"></span>
+            <span class="mui-tab-label">购物车</span>
+        </a>
+        <a class="mui-tab-item" href="user.html">
+            <span class="mui-icon mui-icon-person"></span>
+            <span class="mui-tab-label">会员中心</span>
+        </a>
+    </nav>
+
+    <div class="mui-content">
+        <div class="mui-scroll-wrapper">
+            <div class="mui-scroll">
+                <!--这里放置真实显示的DOM内容-->
+                <div class="my-container">
+                    <div>
+                        <label for="user-name">用户名</label>
+                        <input type="text" placeholder="请输入用户名" id="user-name">
+                    </div>
+                    <div>
+                        <label for="user-pwd">密码</label>
+                        <input type="password" placeholder="请输入密码" id="user-pwd">
+                        <span class="mui-icon mui-icon-eye"></span>
+                    </div>
+                    <p>
+                        <button class="login-btn">登录</button>
+                    </p>
+                    <a href="./register.html">免费注册</a>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+    <script>
+        $(".mui-icon-eye").on("tap", function () {
+            $(this).prev().prop("type") == "password" ? $(this).prev().prop("type", "text") : $(this).prev().prop("type", "password");
+        })
+
+        $(".login-btn").on("click", function () {
+            var user_name = $("#user-name").val().trim();
+            var user_pwd = $("#user-pwd").val().trim();
+
+            if (!user_name) {
+                mui.alert("请输入用户名");
+                return
+            }
+            if (!user_pwd) {
+                mui.alert("请输入密码");
+                return
+            }
+
+            $.ajax({
+                url: "/user/login",
+                type: "post",
+                data: {
+                    username: user_name,
+                    password: user_pwd
+                },
+                beforeSend:function(){
+                    $(".login-btn").text("登陆中...")
+                },
+                success: function (res) {
+                    if(res.success) {
+                        setTimeout(function(){
+                            $(".login-btn").text("登陆成功")
+                            location.href = "./user.html"
+                        },1000)
+                    }else {
+                        $(".login-btn").text("登陆")
+                        mui.alert(res.message);
+                    }
+                },
+                error: function (err) {
+                    mui.alert(err)
+                },
+                complete: function () {
+                    $("#user-name").val("");
+                    $("#user-pwd").val("")
+                }
+            })
+
+
+        })
+    </script>
+</body>
+
+</html>

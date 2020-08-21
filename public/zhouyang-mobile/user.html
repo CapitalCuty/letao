@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>个人中心</title>
+    <link rel="stylesheet" href="./assets/mui/css/mui.min.css">
+    <link rel="stylesheet" href="assets/mui/css/iconfont.css">
+    <link rel="stylesheet" href="./css/base.css">
+    <script src="./assets/mui/js/mui.min.js"></script>
+    <script src="./assets/zepto/zepto.min.js"></script>
+</head>
+
+<body>
+    <header class="mui-bar mui-bar-nav header">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+        <a class="mui-icon mui-icon-search mui-pull-right"></a>
+        <h1 class="mui-title">个人中心</h1>
+    </header>
+    <nav class="mui-bar mui-bar-tab footer">
+        <a class="mui-tab-item" href="index.html">
+            <span class="mui-icon mui-icon-home"></span>
+            <span class="mui-tab-label">首页</span>
+        </a>
+        <a class="mui-tab-item" href="category.html">
+            <span class="mui-icon mui-icon-bars"></span>
+            <span class="mui-tab-label">分类</span>
+        </a>
+        <a class="mui-tab-item" href="cart.html">
+            <span class="mui-icon iconfont icon-gouwuche"></span>
+            <span class="mui-tab-label">购物车</span>
+        </a>
+        <a class="mui-tab-item mui-active" href="user.html">
+            <span class="mui-icon mui-icon-person"></span>
+            <span class="mui-tab-label">会员中心</span>
+        </a>
+    </nav>
+
+    <div class="mui-content">
+        <div class="mui-scroll-wrapper">
+            <div class="mui-scroll">
+                <!--这里放置真实显示的DOM内容-->
+                <ul class="mui-table-view ulBox">
+                    <!-- 模板引擎获取数据 -->
+
+                    <!-- <li class="mui-table-view-cell">
+                        <a class="mui-navigate-right">
+                            <img class="mui-media-object mui-pull-left" src="./images/user.jpg">
+                            <div class="mui-media-body">
+                                <div>{{mobile}}</div>
+                                <p class='mui-ellipsis'>
+                                    账号:<span>{{username}}</span>
+                                </p>
+                            </div>
+                        </a>
+                    </li> -->
+
+                    <li class="mui-table-view-cell">
+                        <a class="mui-navigate-right" href="./changePwd.html">修改密码</a>
+                    </li>
+                    <li class="mui-table-view-cell">
+                        <a class="mui-navigate-right">我的购物车</a>
+                    </li>
+                    <li class="mui-table-view-cell">
+                        <a class="mui-navigate-right">收货地址管理</a>
+                    </li>
+
+                </ul>
+                <ul class="mui-table-view mui-text-center">
+                    <li class="mui-table-view-cell login-out">退出登录</li>
+                </ul>
+            </div>
+        </div>
+
+
+    </div>
+    <script src="./assets/artTemplate/template-web.js"></script>
+
+    <script type="text/html" id="ul-template">
+        <li class="mui-table-view-cell">
+            <a class="mui-navigate-right">
+                <img class="mui-media-object mui-pull-left" src="./images/user.jpg">
+                <div class="mui-media-body">
+                    <div>{{mobile}}</div>
+                    <p class='mui-ellipsis'>
+                        账号:<span>{{username}}</span>
+                    </p>
+                </div>
+            </a>
+        </li>
+        
+    </script>
+
+    <script>
+        // 进入页面后，获取用户信息
+        $.ajax({
+            url: "/user/queryUserMessage",
+            type: "get",
+            success: function (res) {
+                var dataHtml = template("ul-template", res);
+                $(".ulBox").prepend(dataHtml)
+
+            },
+            error: function (err) {
+                console.log(err)
+            }
+        })
+
+
+        // 退出登录
+        $(".login-out").on("tap", function () {
+            mui.confirm("您确定要退出登录吗？", function (type) {
+                if (type.index == 1) {
+                    $.ajax({
+                        url:"/user/logout",
+                        type:"get",
+                        success:function(res){
+                            if(res.success) {
+                                setTimeout(function(){
+                                    location.href="./login.html"
+                                },1000)
+                            }
+                            console.log(res)
+                        },
+                        error:function(err){
+                            console.log(err)
+                        }
+                    })
+                }
+            })
+
+        })
+    </script>
+</body>
+
+</html>

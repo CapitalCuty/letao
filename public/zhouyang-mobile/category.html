@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>分类</title>
+    <link rel="stylesheet" href="./assets/mui/css/mui.min.css">
+    <link rel="stylesheet" href="assets/mui/css/iconfont.css">
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/catagory.css">
+    <script src="./assets/zepto/zepto.min.js"></script>
+    <script src="./assets/mui/js/mui.min.js"></script>
+    <script src="./assets/artTemplate/template-web.js"></script>
+</head>
+
+<body>
+    <header class="mui-bar mui-bar-nav header">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+        <a class="mui-icon mui-icon-search mui-pull-right"></a>
+        <h1 class="mui-title">乐淘云购</h1>
+    </header>
+    <nav class="mui-bar mui-bar-tab footer">
+        <a class="mui-tab-item mui-active" href="index.html">
+            <span class="mui-icon mui-icon-home"></span>
+            <span class="mui-tab-label">首页</span>
+        </a>
+        <a class="mui-tab-item" href="category.html">
+            <span class="mui-icon mui-icon-bars"></span>
+            <span class="mui-tab-label">分类</span>
+        </a>
+        <a class="mui-tab-item" href="cart.html">
+            <span class="mui-icon iconfont icon-gouwuche"></span>
+            <span class="mui-tab-label">购物车</span>
+        </a>
+        <a class="mui-tab-item" href="user.html">
+            <span class="mui-icon mui-icon-person"></span>
+            <span class="mui-tab-label">会员中心</span>
+        </a>
+    </nav>
+
+    <div class="mui-content">
+
+        <div class="my-content">
+            <!-- 左侧列表 -->
+            <div class="category-left">
+                <div class="mui-scroll-wrapper">
+                    <div class="mui-scroll">
+                        <!--这里放置真实显示的DOM内容-->
+                        <!-- <a href="#">运动馆</a> -->
+
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- 右侧商品栏 -->
+            <div class="category-right mui-clearfix">
+                <div class="mui-scroll-wrapper">
+                    <div class="mui-scroll">
+                        <!--这里放置真实显示的DOM内容-->
+                        <!-- <a href="#">
+                            <img src="./images/brand1.png" alt="">
+                            <span>耐克</span>
+                        </a> -->
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 定义一级菜单模板 -->
+        <script type="text/html" id="category-left">
+            {{each rows}}
+                <a href="javascript:;" data-id="{{$value.id}}">{{$value.categoryName}}</a>
+            {{/each}}
+            
+        </script>
+        <!-- 定义二级菜单模板 -->
+        <script type="text/html" id="category-right">
+            {{each rows}}
+            <a href="#">
+                <img src="{{$value.brandLogo}}" alt="">
+                <span>{{$value.brandName}}</span>
+            </a>
+            {{/each}}
+            
+        </script>
+
+    </div>
+
+    <script>
+        mui('.mui-scroll-wrapper').scroll({
+            deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+        });
+
+        // 获取一级菜单的分类信息
+        $.ajax({
+            url: "/category/queryTopCategory",
+            type: "get",
+            success: function (res) {
+                var html = template("category-left", res)
+                $(".category-left .mui-scroll").html(html)
+                $(".category-left .mui-scroll a").eq(0).addClass("active");
+                // 默认显示第一个二级菜单
+                $.ajax({
+                    url: "/category/querySecondCategory",
+                    type: "get",
+                    data: {
+                        id: $(".category-left .mui-scroll a").eq(0).attr("data-id")
+                    },
+                    success: function (res) {
+                        var html = template("category-right", res);
+                        $(".category-right .mui-scroll").html(html)
+
+                    },
+                    error: function (err) {
+                        console.log(err)
+                    }
+                })
+            },
+            error: function (err) {
+                console.log(err)
+            }
+        })
+
+
+
+        // 一级菜单点击事件
+        $(".category-left .mui-scroll").on("tap", "a", function () {
+            $(this).addClass("active").siblings().removeClass("active");
+
+            $.ajax({
+                url: "/category/querySecondCategory",
+                type: "get",
+                data: {
+                    id: $(this).attr("data-id")
+                },
+                success: function (res) {
+                    var html = template("category-right", res);
+                    $(".category-right .mui-scroll").html(html);
+                },
+                error: function (err) {
+                    console.log(err)
+                }
+            })
+        })
+    </script>
+</body>
+
+</html>

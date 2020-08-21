@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <title>搜索中心</title>
+    <link rel="stylesheet" href="./assets/mui/css/mui.min.css">
+    <link rel="stylesheet" href="assets/mui/css/iconfont.css">
+    <link rel="stylesheet" href="./css/base.css">
+    <link rel="stylesheet" href="./css/searchlist.css">
+    <script src="./assets/zepto/zepto.min.js"></script>
+    <script src="./assets/mui/js/mui.min.js"></script>
+</head>
+
+<body>
+    <header class="mui-bar mui-bar-nav header">
+        <a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+        <h1 class="mui-title">搜索中心</h1>
+    </header>
+    <nav class="mui-bar mui-bar-tab footer">
+        <a class="mui-tab-item" href="index.html">
+            <span class="mui-icon mui-icon-home"></span>
+            <span class="mui-tab-label">首页</span>
+        </a>
+        <a class="mui-tab-item" href="category.html">
+            <span class="mui-icon mui-icon-bars"></span>
+            <span class="mui-tab-label">分类</span>
+        </a>
+        <a class="mui-tab-item" href="cart.html">
+            <span class="mui-icon iconfont icon-gouwuche"></span>
+            <span class="mui-tab-label">购物车</span>
+        </a>
+        <a class="mui-tab-item" href="user.html">
+            <span class="mui-icon mui-icon-person"></span>
+            <span class="mui-tab-label">会员中心</span>
+        </a>
+    </nav>
+
+    <div class="mui-content">
+        <div class="mui-scroll-wrapper refreshContainer">
+            <div class="mui-scroll">
+                <!--这里放置真实显示的DOM内容-->
+                <div class="container">
+                    <div class="topBox">
+                        <div class="mui-row">
+                            <div class="mui-col-sm-6 mui-col-xs-6 price">
+                                价格
+                                <a class="mui-icon mui-icon-arrowdown"></a>
+                            </div>
+                            <div class="mui-col-sm-6 mui-col-xs-6 sold">
+                                销量
+                                <a class="mui-icon mui-icon-arrowdown"></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="middleBox">
+                        <ul>
+                            <!-- 定义数据模板 -->
+                            <!-- <li>
+                                <a href="">
+                                    <img src="./images/product.jpg" alt="">
+                                    <p>adidas阿迪达斯 男式 场下休闲篮球鞋</p>
+                                    <div>
+                                        <span>￥560.00</span>
+                                        <s>￥888.00</s>
+                                    </div>
+                                    <button>立即购买</button>
+                                </a>
+                            </li> -->
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+    </div>
+    <!-- 引入模板引擎js -->
+    <script src="./assets/artTemplate/template-web.js"></script>
+    <!-- 定义模板 -->
+    <script type="text/html" id="queryData">
+        {{each data}}
+        <li>
+            <a href="javascript:;">
+                <img src="./images/{{$value.pic[0].picName}}" alt="">
+                <p>{{$value.proName}}</p>
+                <div>
+                    <span>{{$value.price}}</span>
+                    <s>{{$value.oldPrice}}</s>
+                </div>
+                <button data-id="{{$value.id}}">立即购买</button>
+            </a>
+        </li>
+        {{/each}}
+    </script>
+
+    <script>
+        var page = 1;
+        var pageSize = 4;
+        var price=2;
+        var num =2;
+        var dataHtml = "";
+
+        mui('.mui-scroll-wrapper').scroll({
+            deceleration: 0.0005 //flick 减速系数，系数越大，滚动速度越慢，滚动距离越小，默认值0.0006
+        });
+
+
+        var refreshContainer = document.querySelector(".refreshContainer")
+        // 上拉加载
+        mui.init({
+            pullRefresh: {
+                container: refreshContainer,//待刷新区域标识，querySelector能定位的css选择器均可，比如：id、.class等
+                up: {
+                    height: 50,//可选.默认50.触发上拉加载拖动距离
+                    auto: true,//可选,默认false.自动上拉加载一次
+                    contentrefresh: "正在加载...",//可选，正在加载状态时，上拉加载控件上显示的标题内容
+                    contentnomore: '没有更多数据了',//可选，请求完毕若没有更多数据时显示的提醒内容；
+                    callback: pullfresh_function //必选，刷新函数，根据具体业务来编写，比如通过ajax从服务器获取新数据；
+                }
+            }
+        });
+        var This;
+        function pullfresh_function() {
+            if (!This) {
+                This = this
+            }
+            //业务逻辑代码，比如通过ajax从服务器获取新数据；
+            // 搜索产品
+            $.ajax({
+                url: "/product/queryProduct",
+                type: "get",
+                data: {
+                    num:num,
+                    price:price,
+                    page: page++,
+                    pageSize: pageSize
+                },
+                success: function (res) {
+                    if (res.data.length > 0) {
+                        dataHtml += template("queryData", res)
+                        $(".middleBox ul").html(dataHtml)
+                        //注意：
+                        //1、加载完新数据后，必须执行如下代码，true表示没有更多数据了：
+                        //2、若为ajax请求，则需将如下代码放置在处理完ajax响应数据之后
+                        This.endPullupToRefresh(false);
+                    } else {
+                        This.endPullupToRefresh(true);
+                    }
+                },
+                error: function (err) {
+                    console.log(err)
+                }
+            })
+
+
+        }
+
+        function oderByPrice() {
+            if (!This) {
+                This = this
+            }
+            $.ajax({
+                url: "/product/queryProduct",
+                type: "get",
+                data: {
+                    price:price,
+                    page: page++,
+                    pageSize: pageSize
+                },
+                success: function (res) {
+                    if (res.data.length > 0) {
+                        dataHtml += template("queryData", res)
+                        $(".middleBox ul").html(dataHtml)
+                        //注意：
+                        //1、加载完新数据后，必须执行如下代码，true表示没有更多数据了：
+                        //2、若为ajax请求，则需将如下代码放置在处理完ajax响应数据之后
+                        This.endPullupToRefresh(false);
+                    } else {
+                        This.endPullupToRefresh(true);
+                    }
+                },
+                error: function (err) {
+                    console.log(err)
+                }
+            })
+        }
+
+        function oderByNum() {
+            if (!This) {
+                This = this
+            }
+            $.ajax({
+                url: "/product/queryProduct",
+                type: "get",
+                data: {
+                    num:num,
+                    page: page++,
+                    pageSize: pageSize
+                },
+                success: function (res) {
+                    if (res.data.length > 0) {
+                        dataHtml += template("queryData", res)
+                        $(".middleBox ul").html(dataHtml)
+                        //注意：
+                        //1、加载完新数据后，必须执行如下代码，true表示没有更多数据了：
+                        //2、若为ajax请求，则需将如下代码放置在处理完ajax响应数据之后
+                        This.endPullupToRefresh(false);
+                    } else {
+                        This.endPullupToRefresh(true);
+                    }
+                },
+                error: function (err) {
+                    console.log(err)
+                }
+            })
+        }
+
+        // 价格排序
+        $(".price").on("tap",function(){
+            price= price==1?2:1;
+            dataHtml=""
+            page=1;
+            pageSize=$('.middleBox ul').children().length;
+            oderByPrice()
+            mui('.refreshContainer').pullRefresh().refresh(true);
+        })
+
+        // 销量排序
+        $(".sold").on("tap",function(){
+            num= num==1?2:1;
+            dataHtml=""
+            page=1;
+            pageSize=$('.middleBox ul').children().length;
+            oderByNum()
+            mui('.refreshContainer').pullRefresh().refresh(true);
+        })
+
+        $(".middleBox").on("tap","button",function(){
+            var id = $(this).attr("data-id")
+            console.log(id)
+            location.href="./detail.html?id="+id;
+        })
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,77 @@
+.my-container {
+  font-size: 16px;
+}
+.my-container .detail-title {
+  padding: 10px;
+  border-bottom: 1px solid #cccccc;
+}
+.my-container .detail-price {
+  padding: 10px;
+  border-bottom: 1px solid #cccccc;
+}
+.my-container .detail-price .new-price {
+  font-size: 24px;
+  color: #ea543d;
+  padding-right: 10px;
+}
+.my-container .detail-price .new-price em {
+  font-style: normal;
+}
+.my-container .detail-price .old-price {
+  color: #cccccc;
+}
+.my-container .detail-price .old-price em {
+  font-style: normal;
+}
+.my-container .detail-size {
+  padding: 10px;
+  border-bottom: 1px solid #cccccc;
+}
+.my-container .detail-size em {
+  font-style: normal;
+}
+.my-container .detail-size span {
+  display: inline-block;
+  text-align: center;
+  width: 28px;
+  height: 28px;
+  line-height: 28px;
+  border: 1px solid #cccccc;
+  margin: 0 10px 10px 0;
+}
+.my-container .detail-num {
+  height: 34px;
+  line-height: 34px;
+  padding: 10px;
+}
+.my-container .detail-num .num-ipt .reduce {
+  height: 34px;
+  border-radius: 0;
+}
+.my-container .detail-num .num-ipt .current-num {
+  width: 50px;
+  height: 34px;
+  text-align: center;
+  border-radius: 0;
+  border-left: none;
+  border-right: none;
+}
+.my-container .detail-num .num-ipt .add {
+  height: 34px;
+  border-radius: 0;
+}
+.my-container .detail-num .remains {
+  margin-left: 10px;
+}
+.my-container .detail-btns {
+  width: 100%;
+  overflow: hidden;
+}
+.my-container .detail-btns button {
+  width: 50%;
+  float: left;
+}
+.current-size {
+  background-color: #fa672d;
+  color: #fff;
+}

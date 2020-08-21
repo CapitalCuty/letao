@@ -1,0 +1,38 @@
+.my-container {
+  padding: 10px;
+}
+.my-container .search {
+  position: relative;
+  height: 28px;
+  padding: 0 70px 0 10px;
+  font-size: 14px;
+  border: 1px solid #006699;
+}
+.my-container .search .search-ipt {
+  width: 100%;
+  height: 25px;
+  border: none;
+  font-size: 14px;
+}
+.my-container .search .search-btn {
+  position: absolute;
+  right: 0;
+  top: -1px;
+  outline: none;
+  height: 28px;
+  vertical-align: middle;
+  width: 70px;
+  background-color: #006699;
+  border: none;
+  color: #ffffff;
+}
+.my-container .history {
+  padding: 15px 0;
+}
+.my-container .history span {
+  font-size: 14px;
+  color: #8f8f94;
+  display: inline-block;
+  line-height: 20px;
+  height: 20px;
+}
